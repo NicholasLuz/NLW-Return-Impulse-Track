@@ -40,7 +40,7 @@ export class SubmitFeedbackUseCase {
                 `<p>Tipo do feedback: <strong>${`${
                     type === "BUG" ? "Problema" : type === "IDEA" ? "Ideia" : "Outro"}`}</strong></p>`,
                 `<p>Comentário: ${comment}</p>`,
-                screenshot ? `<img alt="Print da tela" src="${screenshot} style="width:500px;height:500px;" />` : ``,
+                screenshot ? `<img alt="Print da tela" src="${screenshot}" style="width:500px;height:500px;" />` : ``,
                 `</div>`
             ].join('\n'),
         })

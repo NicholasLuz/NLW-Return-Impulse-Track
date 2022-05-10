@@ -1,13 +1,14 @@
 import { ArrowLeft } from "phosphor-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { FeedbackTypeProps, feedbackTypes } from "..";
+import { AuthContext } from "../../../App";
 import { api } from "../../../lib/api";
 import { CloseButton } from "../../CloseButton";
 import { Loading } from "../../Loading";
 import { ScreenshotButton } from "../ScreenshotButton";
 
 type FeedbackContentStepProps = {
-    feedbackType: FeedbackTypeProps
+    feedbackType: FeedbackTypeProps;
     onFeedbackRestartRequested: () => void;
     onFeedbackSent: () => void;
 }
@@ -23,10 +24,17 @@ export function FeedbackContentStep({
 
     const feedbackTypeInfo = feedbackTypes[feedbackType];
 
+    const { user, signInWithGoogle } = useContext(AuthContext);
+
     async function handleSubmitFeedback(event: FormEvent) {
         event.preventDefault();
 
+        if (!user) {
+            await signInWithGoogle();
+        }
+
         setIsSendingFeedback(true);
+
         
         await api.post('/feedbacks', {
             type: feedbackType,
